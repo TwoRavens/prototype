@@ -1,0 +1,65 @@
+{
+    "name": "tworavens-server",
+    "version": "0.0.0-development",
+    "main": "server.js",
+    "scripts": {
+        "start": "npm run clean && node server.js",
+        "test": "jest",
+        "build": "npm run clean && webpack --config webpack.config.js",
+        "clean": "fsbin emptyDir dist && cd ../client && npm run clean"
+    },
+    "author": "TwoRavens",
+    "contributors": [
+        "Michael Shoemate (https://github.com/shoeboxam)"
+    ],
+    "license": "Apache-2.0",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "csv-parser": "^3.0.0",
+        "express": "^4.17",
+        "express-validator": "^6.12.1",
+        "mongodb": "^4.1.0",
+        "passport": "^0.4.1",
+        "passport-jwt": "^4.0.0",
+        "ws": "^8.2.0",
+        "aws-lambda-invoke": "^3.0.0",
+        "@aws-sdk/client-s3": "^3.27.0",
+        "@aws-sdk/client-lambda": "^3.31.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.15.0",
+        "@babel/preset-env": "^7.15.0",
+        "@babel/preset-typescript": "^7.15.0",
+        "@types/csv-parse": "^1.2.2",
+        "@types/express": "^4.17.13",
+        "@types/passport": "^1.0.7",
+        "@types/passport-jwt": "^3.0.6",
+        "babel-loader": "^8.0.6",
+        "babel-watch": "^7.5.0",
+        "babel-jest": "^27.1.0",
+        "dotenv": "^10.0.0",
+        "aws-lambda": "^1.0.6",
+        "fsbin": "^1.0.8",
+        "jest": "^27.0",
+        "@types/jest": "^27",
+        "ts-jest": "^27",
+        "supertest": "^6.1.6",
+        "@types/supertest": "^2.0.11",
+        "superagent": "^6.1.0",
+        "@types/superagent": "^4.1.12",
+        "ts-loader": "^9.2.5",
+        "ts-node": "^10.2.1",
+        "typescript": "^4.3.5",
+        "webpack": "^5.51.1",
+        "webpack-cli": "^4.8.0"
+    },
+    "engines": {
+        "node": ">=16.7.0"
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node",
+        "setupFiles": ["./test/dotenv-config.js"]
+    }
+}

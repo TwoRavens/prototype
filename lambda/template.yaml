@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Top-level SAM template for TwoRavens serverless functions
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  SolverSearchFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: solver-search
+      CodeUri: solver_search/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+
+Outputs:
+  SolverSearchFunction:
+    Description: "Solver Search Lambda Function ARN"
+    Value: !GetAtt SolverSearchFunction.Arn
+  SolverSearchFunctionIamRole:
+    Description: "Implicit IAM Role created for Solver Search function"
+    Value: !GetAtt SolverSearchFunctionRole.Arn

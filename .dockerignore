@@ -1,0 +1,20 @@
+.git
+*Dockerfile*
+*docker-compose*
+
+# Dependency directories
+server/node_modules/
+client/node_modules/
+
+# dist folders
+server/dist/
+client/dist/
+
+# dotenv environment variables file
+.env
+
+# log files
+*.log
+
+# lambda functions are handled separately
+lambda/

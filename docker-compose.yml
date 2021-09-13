@@ -1,0 +1,23 @@
+version: '2'
+services:
+  mongo:
+    image: mongo:5.0.2
+    ports:
+      - 27017:27017
+
+  web:
+    build: .
+    working_dir: /home/tworavens/server
+    command: npm start
+    ports:
+     - 3750:3750
+    volumes:
+     - .:/home/tworavens/
+     - /home/tworavens/client/node_modules
+     - /home/tworavens/server/node_modules
+    environment:
+     - MONGODB_URI=mongodb://127.0.0.1:27017
+     - NODE_ENV=development
+    depends_on:
+     - mongo
+     
