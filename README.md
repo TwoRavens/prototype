@@ -8,7 +8,7 @@
 ## Develop
 See also [troubleshooting.md](troubleshooting.md).
 
-1. Lambda
+1. Lambda (start docker first)
     ```shell
     cd lambda && sam local start-lambda
     ```

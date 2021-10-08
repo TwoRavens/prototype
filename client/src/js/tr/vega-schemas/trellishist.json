@@ -1,0 +1,21 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A histogram trellis.",
+  "data": {"url": "tworavensData"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 10},
+      "field": "tworavensX",
+      "type": "quantitative",
+      "scale": {"zero":  false}
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative",
+      "scale": {"zero":  false}
+    },
+    "row": {"field": "tworavensY", "type": "nominal"}
+  }
+}
+

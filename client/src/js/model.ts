@@ -26,6 +26,11 @@ export async function invokeLambda() {
         }
     }).then(console.log);
 }
+export async function invokeR() {
+    return await Auth.post("/rook", {
+        body: {app: 'doubler', data: 3}
+    }).then(console.log);
+}
 
 let aggregate: any = '';
 

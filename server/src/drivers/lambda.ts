@@ -8,7 +8,7 @@ export interface LambdaErr {
     stackTrace?: any
 }
 
-export async function invoke_command<T>(name: string, payload?: any): Promise<Result<T, LambdaErr>> {
+export async function invoke_command<T>(name: string, payload?: any): Promise<T> {
     return new LambdaClient({
         endpoint: process.env.NODE_ENV === 'development' ? "http://127.0.0.1:3001/" : undefined,
         credentials: {
@@ -22,13 +22,9 @@ export async function invoke_command<T>(name: string, payload?: any): Promise<Re
             Payload: new TextEncoder().encode(JSON.stringify(payload))
         }))
         .then((data: InvokeCommandOutput) => {
-            let payload = JSON.parse(new TextDecoder().decode(data.Payload));
-            return !!data.FunctionError ? {
-                success: false,
-                body: payload
-            } as Err<LambdaErr> : {
-                success: true,
-                body: JSON.parse(payload.body)
-            } as Ok<T>
+            let response = JSON.parse(new TextDecoder().decode(data.Payload)) as Result<T, LambdaErr>;
+            console.log("lambda response", response);
+            if (response.success) return response.data;
+            throw response.data
         })
 }

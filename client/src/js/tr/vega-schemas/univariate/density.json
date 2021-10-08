@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "annotation": "Scroll to zoom. Drag to pan. Double click to reset.",
+  "data": {
+    "url": "tworavensData"
+  },
+  "description": "A density plot.",
+  "transform": [
+    {
+      "density": "tworavensX"
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone"
+  },
+  "selection": {
+    "grid": {
+      "type": "interval", "bind": "scales"
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "tworavensX",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "density",
+      "type": "quantitative"
+    },
+    "tooltip": [
+      {"field": "value", "type": "quantitative"},
+      {"field": "density", "type": "quantitative"}
+    ]
+  }
+}

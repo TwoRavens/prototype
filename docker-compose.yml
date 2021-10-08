@@ -20,4 +20,11 @@ services:
      - NODE_ENV=development
     depends_on:
      - mongo
-     
+
+  aws-local:
+    image: localstack/localstack
+    ports:
+      - 4566:4566
+      - 4571:4571
+
+#      aws --endpoint-url http://localhost:4566 s3api create-bucket --bucket mybucket

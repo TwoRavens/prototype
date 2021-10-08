@@ -8,18 +8,40 @@ Globals:
     Timeout: 3
 
 Resources:
-  SolverSearchFunction:
+  SolverH2OFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: solver-search
-      CodeUri: solver_search/
-      Handler: app.lambda_handler
+      FunctionName: search-h2o
+      CodeUri: python_h2o/
+      Handler: app.search_h2o
       Runtime: python3.8
+  MongoClientFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mongo-client
+      CodeUri: python_mongo/
+      Handler: src/app.mongo_client
+      Runtime: python3.8
+  RFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      FunctionName: rook
+    Metadata:
+      DockerTag: r-handler
+      DockerContext: ./r_handler
+      Dockerfile: Dockerfile
 
 Outputs:
-  SolverSearchFunction:
-    Description: "Solver Search Lambda Function ARN"
-    Value: !GetAtt SolverSearchFunction.Arn
+  SolverH2OFunction:
+    Value: !GetAtt SolverH2OFunction.Arn
+  MongoClientFunction:
+    Value: !GetAtt MongoClientFunction.Arn
+
   SolverSearchFunctionIamRole:
-    Description: "Implicit IAM Role created for Solver Search function"
-    Value: !GetAtt SolverSearchFunctionRole.Arn
+    Value: !GetAtt SolverH2OFunction.Arn
+  MongoClientFunctionIamRole:
+    Value: !GetAtt MongoClientFunction.Arn
+
+  RFunction:
+    Value: !GetAtt RFunction.Arn

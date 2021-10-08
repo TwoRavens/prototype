@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A scatterplot matrix.",
+  "annotation": "Drag to filter highlighted data.",
+  "repeat": {
+    "row": ["tworavensRow"],
+    "column": ["tworavensCol"]
+  },
+  "spec": {
+    "data": {"url": "tworavensData"},
+    "mark": "point",
+    "selection": {
+      "brush": {
+        "type": "interval",
+        "resolve": "union"
+      }
+    },
+    "encoding": {
+      "x": {"field": {"repeat": "column"},"type": "quantitative", "scale": {"zero":  false}},
+      "y": {"field": {"repeat": "row"},"type": "quantitative", "scale": {"zero":  false}},
+      "color": {
+        "condition": {
+          "selection": "brush"
+        },
+        "value": "grey"
+      },
+      "tooltip": [
+        {"field": {"repeat": "column"},"type": "quantitative"},
+        {"field": {"repeat": "row"},"type": "quantitative"}
+      ]
+    }
+  }
+}

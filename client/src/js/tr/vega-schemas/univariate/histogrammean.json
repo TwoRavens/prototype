@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A histogram with mean highlighted.",
+  "data": {
+    "url": "tworavensData"
+  },
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "bin": true,
+          "field": "tworavensX",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {"field": "tworavensX", "type": "quantitative", "bin": true},
+          {"aggregate": "count", "field": "tworavensX", "type": "quantitative"}
+        ]
+      }
+    },
+    {
+      "mark": "rule",
+      "encoding": {
+        "x": {
+          "aggregate": "mean",
+          "field": "tworavensX",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        },
+        "color": {
+          "value": "red"
+        },
+        "size": {
+          "value": 5
+        },
+        "tooltip": [
+          {"aggregate": "mean", "field": "tworavensX", "type": "quantitative"}
+        ]
+      }
+    }
+  ]
+}

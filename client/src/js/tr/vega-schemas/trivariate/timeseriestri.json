@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Time series plot.",
+  "annotation": "(Shift) click colors in the legend to show specific line(s).",
+  "data": {
+    "format": {"parse": {"tworavensX": "date"}},
+    "url": "tworavensData"
+  },
+  "mark":  {
+    "type": "line"
+  },
+  "transform": [
+    {
+      "aggregate": [{
+        "op": "sum",
+        "field": "tworavensY",
+        "as": "tworavensY"
+      }],
+      "groupby": ["tworavensX", "tworavensZ"]
+    }
+  ],
+  "selection": {
+    "detailing": {
+      "type": "multi",
+      "fields": ["tworavensZ"],
+      "bind": "legend"
+    }
+  },
+  "encoding": {
+    "tooltip": [
+      {"field": "tworavensX", "type": "temporal"},
+      {"field": "tworavensY", "type": "quantitative"}
+    ],
+    "x": {"field": "tworavensX", "type": "temporal", "scale": {"zero": false}},
+    "y": {"field": "tworavensY", "type": "quantitative", "scale": {"zero": false}},
+    "color": {"field": "tworavensZ", "type": "nominal"},
+    "opacity": {
+      "condition": {
+        "selection": "detailing",
+        "value": 1
+      },
+      "value": 0
+    }
+  },
+  "width": 640,
+  "height": 480
+}

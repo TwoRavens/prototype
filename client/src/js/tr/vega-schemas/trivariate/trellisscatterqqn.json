@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A scatterplot trellis.",
+  "data": {"url": "tworavensData"},
+  "mark": "point",
+  "encoding": {
+    "column": {"field": "tworavensZ","type": "nominal"},
+    "x": {"field": "tworavensX","type": "quantitative", "scale": {"zero": false}},
+    "y": {"field": "tworavensY","type": "quantitative", "scale": {"zero": false}}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "description": "A 2D box plot showing median, min, and max.",
+  "data": {
+    "url":"tworavensData"
+  },
+  "mark": {
+    "type": "boxplot",
+    "extent": "min-max"
+  },
+  "encoding": {
+    "y": {"field": "tworavensX", "type": "nominal"},
+    "x": {
+      "field": "tworavensY",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    }
+  }
+}

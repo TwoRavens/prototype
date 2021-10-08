@@ -1,0 +1,10 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A dot plot.",
+  "data": {"url": "tworavensData"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "tworavensX", "type": "quantitative", "scale": {"zero":  false}},
+    "tooltip": {"field": "tworavensX", "type":  "quantitative"}
+  }
+}

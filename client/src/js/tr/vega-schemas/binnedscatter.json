@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A binned scatterplot.",
+  "data": {"url": "tworavensData"},
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 10},
+      "field": "tworavensX",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
+    "y": {
+      "bin": {"maxbins": 10},
+      "field": "tworavensY",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
+    "size": {
+      "aggregate": "count",
+      "type": "quantitative"
+    },
+    "tooltip": [
+      {"field": "tworavensX","type": "quantitative", "bin":  {"maxbins": 20}},
+      {"field": "tworavensY","type": "quantitative", "bin":  {"maxbins": 20}},
+      {"aggregate":  "count", "type": "quantitative"}
+    ]
+  }
+}
