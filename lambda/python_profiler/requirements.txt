@@ -1,0 +1,4 @@
+tworavens-preprocess
+pandas
+smart_open
+boto3

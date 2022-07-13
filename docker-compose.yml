@@ -16,15 +16,18 @@ services:
      - /home/tworavens/client/node_modules
      - /home/tworavens/server/node_modules
     environment:
-     - MONGODB_URI=mongodb://127.0.0.1:27017
+     - TR_MONGO_URI=127.0.0.1:27017
      - NODE_ENV=development
     depends_on:
      - mongo
 
-  aws-local:
-    image: localstack/localstack
+  moto-s3:
+    image: motoserver/moto
     ports:
-      - 4566:4566
-      - 4571:4571
+      - 5000:5000
 
-#      aws --endpoint-url http://localhost:4566 s3api create-bucket --bucket mybucket
+# aws --endpoint-url http://localhost:5000 s3api create-bucket --bucket tworavens
+# aws --endpoint-url http://localhost:5000 s3api list-buckets
+# aws --endpoint-url http://localhost:5000 s3api list-objects --bucket tworavens
+# aws --endpoint-url http://localhost:5000 s3api put-object --bucket tworavens --key learningData.csv --body /Users/michael/TwoRavens/ravens_volume/test_data/185_baseball/TRAIN/dataset_TRAIN/tables/learningData.csv
+# aws --endpoint-url http://localhost:5000 s3api put-object --bucket tworavens --key learningData.csv --body /Users/michael/TwoRavens/ravens_volume/test_data/LL0_186_braziltourism/TRAIN/dataset_TRAIN/tables/learningData.csv

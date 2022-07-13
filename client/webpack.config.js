@@ -17,7 +17,7 @@ module.exports = {
     output: {
         filename: "index.js",
         path: path.resolve(__dirname, '../client/dist'),
-        publicPath: "/",
+        publicPath: "/"
     },
     watchOptions: {
         ignored: '/node_modules/',
@@ -39,18 +39,21 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {presets: ['@babel/preset-env']},
-                },
+                test: /\.(js|ts)$/,
+                exclude: /(node_modules)/,
+                use: {loader: "swc-loader"}
             },
             {
-                test: /\.ts$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ],
             },
+            {
+                test: /\.png$/,
+                type: 'asset/resource'
+            }
         ],
     },
     devServer: {

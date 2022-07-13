@@ -5,43 +5,56 @@ Description: Top-level SAM template for TwoRavens serverless functions
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Environment:
+      Variables:
+        TR_S3_URI:
+        TR_MONGO_URI:
 
 Resources:
-  SolverH2OFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      FunctionName: search-h2o
-      CodeUri: python_h2o/
-      Handler: app.search_h2o
-      Runtime: python3.8
-  MongoClientFunction:
+#  SolverH2OFunction:
+#    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+#    Properties:
+#      FunctionName: search-h2o
+#      CodeUri: python_h2o/
+#      Handler: app.search_h2o
+#      Runtime: python3.8
+  MongoFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: mongo-client
       CodeUri: python_mongo/
-      Handler: src/app.mongo_client
+      Handler: api.api.root_handler
       Runtime: python3.8
-  RFunction:
+      Timeout: 800
+  ProfileFunction:
     Type: AWS::Serverless::Function
     Properties:
-      PackageType: Image
-      FunctionName: rook
-    Metadata:
-      DockerTag: r-handler
-      DockerContext: ./r_handler
-      Dockerfile: Dockerfile
+      FunctionName: profiler
+      CodeUri: python_profiler/
+      Handler: api.api.root_handler
+      Runtime: python3.8
+      Timeout: 800
+
+#  RFunction:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      PackageType: Image
+#      FunctionName: rook
+#    Metadata:
+#      DockerTag: r-handler
+#      DockerContext: ./r_handler
+#      Dockerfile: Dockerfile
 
 Outputs:
-  SolverH2OFunction:
-    Value: !GetAtt SolverH2OFunction.Arn
-  MongoClientFunction:
-    Value: !GetAtt MongoClientFunction.Arn
+#  SolverH2OFunction:
+#    Value: !GetAtt SolverH2OFunction.Arn
+  MongoFunction:
+    Value: !GetAtt MongoFunction.Arn
 
-  SolverSearchFunctionIamRole:
-    Value: !GetAtt SolverH2OFunction.Arn
-  MongoClientFunctionIamRole:
-    Value: !GetAtt MongoClientFunction.Arn
+#  SolverSearchFunctionIamRole:
+#    Value: !GetAtt SolverH2OFunction.Arn
+  MongoFunctionIamRole:
+    Value: !GetAtt MongoFunction.Arn
 
   RFunction:
     Value: !GetAtt RFunction.Arn

@@ -10,10 +10,11 @@ client/dist/
 *.log
 
 # database
-data/
+/data
 
 # local SAM configuration
 lambda/.aws-sam
+lambda/.env-sam.json
 lambda/java-h2o
 
 

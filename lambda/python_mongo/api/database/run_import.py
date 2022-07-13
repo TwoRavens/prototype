@@ -1,5 +1,6 @@
 from api.database.connect import MongoClientUtil
 from api.data import infer_type, encode_variable, DataCarrier
+import os
 
 
 def run_import(
@@ -10,11 +11,12 @@ def run_import(
         indexes=None) -> None:
     """Load data into Mongo as a new collection"""
 
+    # DEBUG TAG
     mongo_client = MongoClientUtil()
     db = mongo_client.get_database(database_name)
 
-    # dataset already loaded in mongo
-    if collection_name in db.list_collection_names():
+    # Check if dataset already loaded in mongo
+    if os.environ.get("MONGO_COLLECTION_PREFIX", "tr_") + collection_name in db.list_collection_names():
         if reload:
             db[collection_name].drop()
         else:
@@ -25,9 +27,8 @@ def run_import(
 
     # encode columns in a format that is compatible with MongoDB
     columns = [encode_variable(value) for value in data.columns]
-    with data.values as values:
-        for value in values:
-            collection.insert_one({col: infer_type(val) for col, val in zip(columns, value)})
+    for value in data.values:
+        collection.insert_one({col: infer_type(val) for col, val in zip(columns, value)})
 
     if indexes:
         for index in indexes:

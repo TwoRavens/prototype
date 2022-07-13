@@ -22,7 +22,7 @@ module.exports = {
     name: 'server',
     target: 'node',
     entry: {
-        app: ['./src/router.ts'],
+        app: [path.resolve(__dirname, '/src/router.ts')],
     },
     output: {
         filename: "router.js",
@@ -49,17 +49,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {presets: ['@babel/preset-env']},
-                },
-            },
-            {
-                test: /\.ts$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
+                test: /\.(js|ts)$/,
+                exclude: /(node_modules)/,
+                use: {loader: "swc-loader"}
             },
         ],
     },

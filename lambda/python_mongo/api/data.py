@@ -1,8 +1,11 @@
 import csv
 from typing import List, Iterable
 
-from smart_open import open
-import uuid
+import boto3
+from smart_open import open as s_open
+import os
+
+from botocore.config import Config
 
 
 class DataCarrier(object):
@@ -10,35 +13,38 @@ class DataCarrier(object):
         self.columns = column_uniquify(columns)
         self.values = values
 
-    def _location(self):
-        import os
-        if os.environ.get("TR_LOCAL"):
-            os.path.join("localhost/"
-            os.path.os.path.abspath(__file__)
+    @staticmethod
+    def open_s3(bucket, key, *args, **kwargs):
+        """Open a byte stream to an S3 bucket's key"""
+        endpoint_url = os.environ.get("TR_S3_URI", 'false')
+        if endpoint_url != 'false':
+            client = boto3.client(
+                's3', endpoint_url=f'http://{endpoint_url}',
+                config=Config(s3={'addressing_style': 'path'}))
+            kwargs.setdefault('transport_params', {}).setdefault('client', client)
+
+        return s_open(f's3://{bucket}/{key}', *args, **kwargs)
 
     @staticmethod
     def read_s3_csv(bucket: str, key: str, reader_args=None) -> "DataCarrier":
-        in_file = open(f's3://{bucket}/{key}')
 
         import csv
+        in_file = DataCarrier.open_s3(bucket, key)
         reader = csv.reader(in_file, **reader_args or {})
         columns = next(reader)
 
         return DataCarrier(columns, reader)
 
-    def write_s3_csv(self, bucket: str, key: str = None) -> str:
+    def write_s3_csv(self, bucket: str, key: str = None):
         """Export data to s3"""
-        key = key or f'{uuid.uuid4()}.csv'
 
-        with open(f's3://{bucket}/{key}') as out_file:
+        with DataCarrier.open_s3(bucket, key, 'w') as out_file:
             dict_writer = csv.DictWriter(
                 out_file,
                 fieldnames=self.columns,
                 extrasaction="ignore")
             dict_writer.writeheader()
             dict_writer.writerows(self.values)
-
-        return key
 
 
 def column_uniquify(column_names: List[str]) -> List[str]:
