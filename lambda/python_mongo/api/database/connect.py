@@ -32,17 +32,18 @@ class MongoClientUtil(object):
             return explicit_str
 
         # Format the username and password, if available...
-        username = quote_plus(os.environ.get("MONGO_USERNAME"))
-        password = quote_plus(os.environ.get("MONGO_PASSWORD"))
+        username = os.environ.get("MONGO_USERNAME")
+        password = os.environ.get("MONGO_PASSWORD")
 
         # If no username/password, use address only
         #  (e.g. localhost)
+        mongodb_uri = os.environ.get("TR_MONGO_URI", "127.0.0.1:27017")
         if not username and not password:
             # No username
-            return f'mongodb://{os.environ.get("MONGO_DB_ADDRESS")}/'
+            return f'mongodb://{mongodb_uri}/'
         elif username and password:
             # Format mongo url with username/password
-            return f'mongodb://{username}:{password}@{os.environ.get("MONGO_DB_ADDRESS")}/'
+            return f'mongodb://{quote_plus(username)}:{quote_plus(password)}@{mongodb_uri}/'
         else:
             raise ValueError("both username and password must be set, or not set")
 
@@ -57,7 +58,7 @@ class MongoClientUtil(object):
             return ValueError('"collection_name" must be specified')
 
         if should_prefix:
-            collection_name = os.environ.get("MONGO_COLLECTION_PREFIX") + collection_name
+            collection_name = os.environ.get("MONGO_COLLECTION_PREFIX", "tr_") + collection_name
 
         return self.get_database(database_name)[collection_name]
 

@@ -1,4 +1,5 @@
 import * as express from "express";
+// import 'source-map-support/register'
 
 export const app = express.Router();
 
@@ -6,10 +7,12 @@ export const app = express.Router();
 export declare var process: { env: any }
 
 
-import {register_data} from "./views/data";
-import {register_user} from "./views/user";
-import {register_solve} from "./views/solve";
+import {register_dataset_views} from "./dataset/views";
+import {register_auth_views} from "./auth/views";
+import {register_solver_views} from "./solver/views";
+import {register_workspace_views} from "./workspace/views";
 
-register_data(app)
-register_user(app)
-register_solve(app)
+register_auth_views(app)
+register_dataset_views(app)
+register_solver_views(app)
+register_workspace_views(app)

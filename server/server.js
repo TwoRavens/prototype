@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 const bodyParser = require("body-parser");
+const ws = require('ws');
+// require('source-map-support').install();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 if (!['development', 'production', 'test'].includes(process.env.NODE_ENV)) {
@@ -18,6 +20,7 @@ if (process.env.NODE_ENV === "development" && !fs.existsSync(dotenv_path)) {
 require('dotenv').config({path: path.resolve(process.cwd(), "..", `.env.${process.env.NODE_ENV}`)});
 
 if (process.env.NODE_ENV === 'development') {
+    // NOTE: see https://webpack.js.org/configuration/watch/#saving-in-webstorm
     const webpack = require('webpack');
     const clientConfig = require('../client/webpack.config');
 
@@ -73,3 +76,19 @@ app.listen(port, '0.0.0.0', function () {
     console.log(`🚀 SERVER STARTED AT http://localhost:${port}.\n`);
 });
 
+// create a bus for websocket events
+const ws_bus = new ws.Server({ noServer: true, path: "/ws"});
+const clients = new Map();
+// tell bus how to handle new websocket connections
+ws_bus.on('connection', socket => {
+    clients.set("dummy_user_id", {})
+    socket.on('message', message => console.log(message));
+    socket.on("close", () => clients.delete("dummy_user_id"));
+});
+
+// attach websocket bus to the app
+app.on('upgrade', (request, socket, head) => {
+    ws_bus.handleUpgrade(request, socket, head, socket => {
+        ws_bus.emit('connection', socket, request);
+    });
+});

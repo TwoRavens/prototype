@@ -10,10 +10,15 @@ See also [troubleshooting.md](troubleshooting.md).
 
 1. Lambda (start docker first)
     ```shell
-    cd lambda && sam local start-lambda
+    cd lambda && python env_to_sam.py && sam local start-lambda --env-vars .env-sam.json
+    ```
+    Run the following in another terminal for function hot-reloading:
+    ```shell
+    npm i -g nodemon
+    nodemon --exec sam build -e py
     ```
 
-1. Mongo and Node.js
+3. Mongo and Node.js
     ```shell
     docker-compose up
     ```
@@ -22,6 +27,7 @@ See also [troubleshooting.md](troubleshooting.md).
     ```shell
     mongod --dbpath=./data/db
     cd server && npm start
+    moto_server s3
     ```
 
 ## Test
