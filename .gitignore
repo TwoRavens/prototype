@@ -1,22 +1,19 @@
 # Dependency directories
-server/node_modules/
-client/node_modules/
+server-node/node_modules/
+server-node/client/node_modules/
 
 # dist folders
-server/dist/
-client/dist/
+server-node/dist/
+server-node/client/dist/
+
+# old code
+unused
 
 # log files
 *.log
 
 # database
 /data
-
-# local SAM configuration
-lambda/.aws-sam
-lambda/.env-sam.json
-lambda/java-h2o
-
 
 ### Environment Config ###
 .env.development

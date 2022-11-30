@@ -1,3 +1,0 @@
-pymongo
-smart_open
-boto3

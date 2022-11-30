@@ -4,11 +4,11 @@
 
 # Dependency directories
 server/node_modules/
-client/node_modules/
+server/client/node_modules/
 
 # dist folders
 server/dist/
-client/dist/
+server/client/dist/
 
 # dotenv environment variables file
 .env

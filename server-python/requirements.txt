@@ -1,0 +1,9 @@
+pymongo
+pandas
+smart_open
+boto3
+fastapi
+pydantic
+raven_preprocess
+-e ../raven-profiler
+-e ../raven-solver

@@ -1,12 +1,17 @@
 version: '2'
 services:
+  moto-s3:
+    image: motoserver/moto
+    ports:
+      - 5000:5000
+  
   mongo:
     image: mongo:5.0.2
     ports:
       - 27017:27017
 
-  web:
-    build: .
+  server-node:
+    build: /containers/server
     working_dir: /home/tworavens/server
     command: npm start
     ports:
@@ -20,11 +25,20 @@ services:
      - NODE_ENV=development
     depends_on:
      - mongo
+     - moto-s3
 
-  moto-s3:
-    image: motoserver/moto
+  server-python:
+    build: ./containers/server-python
+    working_dir: /home/tworavens/
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 5001
     ports:
-      - 5000:5000
+     - 5001:5001
+    volumes:
+      - ./containers/server-python/:/usr/src/app/
+    depends_on:
+     - mongo
+     - moto-s3
+
 
 # aws --endpoint-url http://localhost:5000 s3api create-bucket --bucket tworavens
 # aws --endpoint-url http://localhost:5000 s3api list-buckets
